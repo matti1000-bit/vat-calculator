@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Global VAT/Sales Tax Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    label, select, input {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+    }
+    .result, .meaning {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e0f7fa;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Global VAT/Sales Tax Calculator</h1>
+    <label for="country">Select Country:</label>
+    <select id="country" onchange="showMeaning()">
+      <option value="Hungary">Hungary (27%)</option>
+      <option value="Sweden">Sweden (25%)</option>
+      <option value="Germany">Germany (19%)</option>
+      <option value="France">France (20%)</option>
+      <option value="UK">UK (20%)</option>
+      <option value="India">India (18%)</option>
+      <option value="China">China (13%)</option>
+      <option value="Japan">Japan (10%)</option>
+      <option value="Saudi Arabia">Saudi Arabia (15%)</option>
+      <option value="UAE">UAE (5%)</option>
+      <option value="Pakistan">Pakistan (18%)</option>
+      <option value="USA">USA (7%)</option>
+      <option value="Canada">Canada (5%)</option>
+      <option value="Brazil">Brazil (18%)</option>
+      <option value="Australia">Australia (10%)</option>
+      <option value="New Zealand">New Zealand (15%)</option>
+      <option value="South Africa">South Africa (15%)</option>
+      <option value="Mexico">Mexico (16%)</option>
+      <option value="Malaysia">Malaysia (10%)</option>
+      <option value="Russia">Russia (20%)</option>
+    </select>
+
+    <label for="vatAmount">Enter VAT/Sales Tax Amount Only:</label>
+    <input type="number" id="vatAmount" placeholder="e.g. 15.00">
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="output"></div>
+    <div class="meaning" id="meaning"></div>
+  </div>
+
+  <script>
+    const taxRates = {
+      "Hungary": 27,
+      "Sweden": 25,
+      "Germany": 19,
+      "France": 20,
+      "UK": 20,
+      "India": 18,
+      "China": 13,
+      "Japan": 10,
+      "Saudi Arabia": 15,
+      "UAE": 5,
+      "Pakistan": 18,
+      "USA": 7,
+      "Canada": 5,
+      "Brazil": 18,
+      "Australia": 10,
+      "New Zealand": 15,
+      "South Africa": 15,
+      "Mexico": 16,
+      "Malaysia": 10,
+      "Russia": 20
+    };
+
+    const taxMeanings = {
+      "Hungary": "VAT is applied at 27%, the highest standard rate in the EU.",
+      "Sweden": "VAT is applied at 25% on most goods and services.",
+      "Germany": "VAT is applied at 19% standard rate, with reduced rates for essentials.",
+      "France": "TVA is applied at 20% standard rate, with reduced rates for specific items.",
+      "UK": "VAT is applied at 20% standard rate, with exemptions and reduced rates.",
+      "India": "GST is a unified tax system with a standard rate of 18%.",
+      "China": "VAT is applied at 13% standard rate, with reduced rates for some goods.",
+      "Japan": "Consumption tax is applied at 10% on most goods and services.",
+      "Saudi Arabia": "VAT is applied at 15% under the GCC framework.",
+      "UAE": "VAT is applied at 5% on most goods and services.",
+      "Pakistan": "Sales tax is applied at 18% on goods and services.",
+      "USA": "Sales tax varies by state, average around 7%. No federal VAT.",
+      "Canada": "GST is applied at 5%, with additional provincial taxes.",
+      "Brazil": "VAT-like taxes are applied at 18% on goods and services.",
+      "Australia": "GST is applied at 10% on most goods and services.",
+      "New Zealand": "GST is applied at 15% on most goods and services.",
+      "South Africa": "VAT is applied at 15% on most goods and services.",
+      "Mexico": "VAT is applied at 16% on most goods and services.",
+      "Malaysia": "Sales tax is applied at 10% on goods and 6% service tax.",
+      "Russia": "VAT is applied at 20% on most goods and services."
+    };
+
+    function calculate() {
+      const country = document.getElementById("country").value;
+      const vatAmount = parseFloat(document.getElementById("vatAmount").value);
+      const rate = taxRates[country];
+
+      if (isNaN(vatAmount)) {
+        document.getElementById("output").innerHTML = "Please enter a valid VAT amount.";
+        return;
+      }
+
+      const excludingVAT = (vatAmount * 100) / rate;
+      const includingVAT = excludingVAT + vatAmount;
+
+      document.getElementById("output").innerHTML = `
+        <strong>Results for ${country}:</strong><br>
+        VAT Rate: ${rate}%<br>
+        Excluding VAT: ${excludingVAT.toFixed(2)}<br>
+        Including VAT: ${includingVAT.toFixed(2)}
+      `;
+    }
+
+    function showMeaning() {
+      const country = document.getElementById("country").value;
+      document.getElementById("meaning").innerHTML = `<strong>${country} Tax System:</strong><br>${taxMeanings[country]}`;
+    }
+
+    window.onload = showMeaning;
+  </script>
+</body>
+</html>
